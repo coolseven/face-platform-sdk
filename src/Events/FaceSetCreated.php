@@ -1,15 +1,28 @@
 <?php
 
 
-namespace Coolseven\FacePlatformSdk\Http\Responses;
-
+namespace Coolseven\FacePlatformSdk\Events;
 
 use Coolseven\FacePlatformSdk\Resources\FaceSet;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class CreateFaceSetResponse implements \JsonSerializable
+class FaceSetCreated implements \JsonSerializable
 {
+    /**
+     * @return FaceSet
+     */
+    public function getFaceSet(): FaceSet
+    {
+        return $this->faceSet;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getRawResponse(): ResponseInterface
+    {
+        return $this->rawResponse;
+    }
     /**
      * @var FaceSet
      */
@@ -26,22 +39,6 @@ class CreateFaceSetResponse implements \JsonSerializable
     }
 
     /**
-     * @return FaceSet
-     */
-    public function getFaceSet(): FaceSet
-    {
-        return $this->faceSet;
-    }
-
-    /**
-     * @return Response
-     */
-    public function getRawResponse(): ResponseInterface
-    {
-        return $this->rawResponse;
-    }
-
-    /**
      * Specify data which should be serialized to JSON
      *
      * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -52,8 +49,8 @@ class CreateFaceSetResponse implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'faceSet' => $this->getFaceSet(),
-            'rawResponse' => \GuzzleHttp\json_encode($this->getRawResponse()),
+            'face_set' => $this->getFaceSet(),
+            'raw_response' => \GuzzleHttp\json_encode($this->getRawResponse()),
         ];
     }
 }

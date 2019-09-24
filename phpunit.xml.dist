@@ -15,4 +15,13 @@
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="FACE_PLATFORM_URI" value=""/>
+        <env name="FACE_PLATFORM_CLIENT_ID" value=""/>
+        <env name="FACE_PLATFORM_CLIENT_SECRET" value=""/>
+        <env name="FACE_PLATFORM_USERNAME" value=""/>
+        <env name="FACE_PLATFORM_PASSWORD" value=""/>
+        <env name="FACE_PLATFORM_CACHE_STORE" value=""/>
+        <env name="FACE_PLATFORM_CACHE_KEY" value=""/>
+    </php>
 </phpunit>

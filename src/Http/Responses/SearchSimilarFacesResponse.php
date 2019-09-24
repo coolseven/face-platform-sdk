@@ -4,37 +4,35 @@
 namespace Coolseven\FacePlatformSdk\Http\Responses;
 
 
-use Coolseven\FacePlatformSdk\Resources\FaceSet;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class CreateFaceSetResponse implements \JsonSerializable
+class SearchSimilarFacesResponse implements \JsonSerializable
 {
     /**
-     * @var FaceSet
+     * @var array
      */
-    private $faceSet;
+    private $similarFaces;
     /**
      * @var ResponseInterface
      */
     private $rawResponse;
 
-    public function __construct(FaceSet $faceSet, ResponseInterface $rawResponse)
+    public function __construct(array $similarFaces, ResponseInterface $rawResponse)
     {
-        $this->faceSet = $faceSet;
+        $this->similarFaces = $similarFaces;
         $this->rawResponse = $rawResponse;
     }
 
     /**
-     * @return FaceSet
+     * @return array
      */
-    public function getFaceSet(): FaceSet
+    public function getSimilarFaces(): array
     {
-        return $this->faceSet;
+        return $this->similarFaces;
     }
 
     /**
-     * @return Response
+     * @return ResponseInterface
      */
     public function getRawResponse(): ResponseInterface
     {
@@ -52,8 +50,8 @@ class CreateFaceSetResponse implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'faceSet' => $this->getFaceSet(),
-            'rawResponse' => \GuzzleHttp\json_encode($this->getRawResponse()),
+            'similar_faces' => $this->getSimilarFaces(),
+            'raw_response' => $this->getRawResponse(),
         ];
     }
 }
