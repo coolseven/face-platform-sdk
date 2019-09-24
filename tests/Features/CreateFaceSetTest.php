@@ -4,8 +4,8 @@
 namespace Coolseven\FacePlatformSdk\Tests\Features;
 
 
+use Coolseven\FacePlatformSdk\Tests\TestCase;
 use Illuminate\Support\Str;
-use Tests\TestCase;
 
 class CreateFaceSetTest extends TestCase
 {

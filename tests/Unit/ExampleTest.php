@@ -4,7 +4,8 @@
 namespace Coolseven\FacePlatformSdk\Tests\Unit;
 
 
-use Tests\TestCase;
+
+use Coolseven\FacePlatformSdk\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

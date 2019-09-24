@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests;
+namespace Coolseven\FacePlatformSdk\Tests;
 
 
 use Coolseven\FacePlatformSdk\Auth\AccessTokenStorage;
@@ -9,7 +9,7 @@ use Coolseven\FacePlatformSdk\Auth\AuthConfig;
 use Coolseven\FacePlatformSdk\FacePlatformClient;
 use Illuminate\Support\Facades\Cache;
 
-class TestCase extends \PHPUnit\Framework\TestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
      * @return FacePlatformClient
