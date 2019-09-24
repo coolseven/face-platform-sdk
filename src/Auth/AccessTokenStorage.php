@@ -5,12 +5,12 @@ namespace Coolseven\FacePlatformSdk\Auth;
 
 
 use Coolseven\FacePlatformSdk\Contracts\StoresAccessToken;
-use Illuminate\Contracts\Cache\Repository;
+use Psr\SimpleCache\CacheInterface;
 
 class AccessTokenStorage implements StoresAccessToken
 {
     /**
-     * @var Repository
+     * @var CacheInterface
      */
     private $cacheRepo;
 
@@ -19,7 +19,7 @@ class AccessTokenStorage implements StoresAccessToken
      */
     private $cacheKey;
 
-    public function __construct(Repository $cache, string $cacheKey)
+    public function __construct(CacheInterface $cache, string $cacheKey)
     {
         $this->cacheRepo = $cache;
         $this->cacheKey = $cacheKey;
@@ -31,7 +31,7 @@ class AccessTokenStorage implements StoresAccessToken
      */
     public function getAccessToken(): ?AccessToken
     {
-        return $this->cacheRepo->get($this->cacheKey);
+        return unserialize($this->cacheRepo->get($this->cacheKey));
     }
 
     /**
@@ -42,7 +42,7 @@ class AccessTokenStorage implements StoresAccessToken
      */
     public function saveAccessToken(AccessToken $accessToken) : ?AccessToken
     {
-        $this->cacheRepo->put($this->cacheKey,$accessToken);
+        $this->cacheRepo->set($this->cacheKey,serialize($accessToken));
 
         return $this->getAccessToken();
     }
