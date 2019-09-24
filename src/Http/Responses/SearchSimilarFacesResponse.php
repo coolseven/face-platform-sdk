@@ -51,7 +51,12 @@ class SearchSimilarFacesResponse implements \JsonSerializable
     {
         return [
             'similar_faces' => $this->getSimilarFaces(),
-            'raw_response' => $this->getRawResponse(),
+            'raw_response' => [
+                'status_code' => $this->getRawResponse()->getStatusCode(),
+                'reason_phrase' => $this->getRawResponse()->getReasonPhrase(),
+                'headers' => $this->getRawResponse()->getHeaders(),
+                'body' => $this->getRawResponse()->getBody()->getContents(),
+            ],
         ];
     }
 }

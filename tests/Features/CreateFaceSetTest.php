@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Tests\Features;
+namespace Coolseven\FacePlatformSdk\Tests\Features;
 
 
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class test_create_face_set extends TestCase
+class CreateFaceSetTest extends TestCase
 {
     /**
      * @test

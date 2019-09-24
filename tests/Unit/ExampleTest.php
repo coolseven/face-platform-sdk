@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Unit;
+namespace Coolseven\FacePlatformSdk\Tests\Unit;
 
 
 use Tests\TestCase;

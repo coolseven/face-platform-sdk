@@ -91,7 +91,8 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
          * {
          *    "token_type": "Bearer",
          *    "expires_in": 31622400,
-         *    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ...."
+         *    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ....",
+         *    "refresh_token": "ckINjKiOjLphYkIdF..."
          * }
          * </pre>
          */
@@ -130,7 +131,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
          * {
          *   "data": {
          *      "id": "8eba99c1-f8b2-4b16-a46b-2c5eab3d1bc1",
-         *      "name": "password-test"
+         *      "name": "name-example"
          *   }
          * }
          * </pre>

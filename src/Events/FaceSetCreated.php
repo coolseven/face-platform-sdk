@@ -50,7 +50,12 @@ class FaceSetCreated implements \JsonSerializable
     {
         return [
             'face_set' => $this->getFaceSet(),
-            'raw_response' => \GuzzleHttp\json_encode($this->getRawResponse()),
+            'raw_response' => [
+                'status_code' => $this->getRawResponse()->getStatusCode(),
+                'reason_phrase' => $this->getRawResponse()->getReasonPhrase(),
+                'headers' => $this->getRawResponse()->getHeaders(),
+                'body' => $this->getRawResponse()->getBody()->getContents(),
+            ],
         ];
     }
 }
