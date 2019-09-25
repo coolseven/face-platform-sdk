@@ -31,12 +31,12 @@ FACE_PLATFORM_CACHE_KEY=
 
 - publish config file
 ```bash
-php artisan vendor:publish --tag=face-platform-sdk
+php artisan vendor:publish --tag=face-platform-sdk.config
 ```
-the config file will be copied to your config dir with filename "face-platform.php"
+the config file will be copied to your config dir with filename "face-platform-sdk.php"
 
 
-## Manage Resouces
+## Manage Resources
 - create a new face set
 ```php
 $facePlatformClient = app(Coolseven\FacePlatformSdk\FacePlatformClient::class);
