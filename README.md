@@ -12,7 +12,7 @@ composer require coolseven/face-platform-sdk
 ```
 
 ### Setup environments
-add following environments to your .env file
+- add following environments to your .env file
 ```dotenv
 FACE_PLATFORM_OAUTH_SERVER=
 FACE_PLATFORM_RESOURCE_SERVER=
@@ -25,7 +25,8 @@ FACE_PLATFORM_PASSWORD=
 FACE_PLATFORM_CACHE_STORE=
 FACE_PLATFORM_CACHE_KEY=
 ```
-Or you can setup environments directly by config file
+
+- publish to config file
 ```bash
 php artisan vendor:publish --tag=face-platform-sdk
 ```
