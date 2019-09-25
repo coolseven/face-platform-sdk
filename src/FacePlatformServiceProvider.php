@@ -15,8 +15,8 @@ class FacePlatformServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/../config/face-platform.php' => $this->app->configPath('face-platform'),
-        ]);
+            __DIR__.'/../config/face-platform.php' => $this->app->configPath('face-platform.php'),
+        ],'face-platform-sdk');
     }
 
     public function register() : void
