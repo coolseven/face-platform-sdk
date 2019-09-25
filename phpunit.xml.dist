@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+>
+    <testsuites>
+        <testsuite name="Package Test Suite">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="FACE_PLATFORM_OAUTH_SERVER" value=""/>
+        <env name="FACE_PLATFORM_RESOURCE_SERVER" value=""/>
+        <env name="FACE_PLATFORM_CLIENT_ID" value=""/>
+        <env name="FACE_PLATFORM_CLIENT_SECRET" value=""/>
+        <env name="FACE_PLATFORM_USERNAME" value=""/>
+        <env name="FACE_PLATFORM_PASSWORD" value=""/>
+        <env name="FACE_PLATFORM_CACHE_STORE" value=""/>
+        <env name="FACE_PLATFORM_CACHE_KEY" value=""/>
+    </php>
+</phpunit>
