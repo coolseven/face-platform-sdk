@@ -35,7 +35,7 @@ class AccessTokenStorage implements StoresAccessToken
         if (null === $accessTokenCache) {
             return null;
         }
-        return unserialize($accessTokenCache);
+        return unserialize($accessTokenCache,[AccessToken::class]);
     }
 
     /**
@@ -46,7 +46,9 @@ class AccessTokenStorage implements StoresAccessToken
      */
     public function saveAccessToken(AccessToken $accessToken) : ?AccessToken
     {
-        $this->cacheRepo->set($this->cacheKey,serialize($accessToken));
+        $ttlInSeconds = $accessToken->getExpiresIn();
+
+        $this->cacheRepo->set($this->cacheKey, serialize($accessToken), $ttlInSeconds);
 
         return $this->getAccessToken();
     }

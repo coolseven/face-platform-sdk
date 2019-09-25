@@ -59,6 +59,8 @@ class FacesImported implements \JsonSerializable
      */
     public function getRawResponse(): ResponseInterface
     {
+        $this->rawResponse->getBody()->rewind();
+
         return $this->rawResponse;
     }
 

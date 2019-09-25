@@ -56,14 +56,13 @@ class SearchFacesTest extends TestCase
     /**
      * @test
      */
-    public function search_similar_faces_by_imgae_base64()
+    public function search_similar_faces_by_image_base64(): void
     {
         $image = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'images/donald_trump.jpeg';
 
         $imageBase64 = base64_encode(file_get_contents($image));
 
         $response = $this->facePlatformClient->searchSimilarFaces($this->faceSetId,$imageBase64,0.93);
-        dump(\GuzzleHttp\json_encode($response,JSON_PRETTY_PRINT));
 
         $this->assertEquals(200,$response->getRawResponse()->getStatusCode());
         $this->assertGreaterThanOrEqual(0,count($response->getSimilarFaces()));

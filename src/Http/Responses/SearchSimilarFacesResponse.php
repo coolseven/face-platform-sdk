@@ -4,23 +4,27 @@
 namespace Coolseven\FacePlatformSdk\Http\Responses;
 
 
+use Coolseven\FacePlatformSdk\Resources\SimilarFace;
 use Psr\Http\Message\ResponseInterface;
 
-class SearchSimilarFacesResponse implements \JsonSerializable
+class SearchSimilarFacesResponse extends BaseResponse implements \JsonSerializable
 {
     /**
-     * @var array
+     * @var SimilarFace[]
      */
     private $similarFaces;
-    /**
-     * @var ResponseInterface
-     */
-    private $rawResponse;
 
+    /**
+     * SearchSimilarFacesResponse constructor.
+     *
+     * @param SimilarFace[]     $similarFaces
+     * @param ResponseInterface $rawResponse
+     */
     public function __construct(array $similarFaces, ResponseInterface $rawResponse)
     {
+        parent::__construct($rawResponse);
+
         $this->similarFaces = $similarFaces;
-        $this->rawResponse = $rawResponse;
     }
 
     /**
@@ -29,14 +33,6 @@ class SearchSimilarFacesResponse implements \JsonSerializable
     public function getSimilarFaces(): array
     {
         return $this->similarFaces;
-    }
-
-    /**
-     * @return ResponseInterface
-     */
-    public function getRawResponse(): ResponseInterface
-    {
-        return $this->rawResponse;
     }
 
     /**
@@ -51,12 +47,7 @@ class SearchSimilarFacesResponse implements \JsonSerializable
     {
         return [
             'similar_faces' => $this->getSimilarFaces(),
-            'raw_response' => [
-                'status_code' => $this->getRawResponse()->getStatusCode(),
-                'reason_phrase' => $this->getRawResponse()->getReasonPhrase(),
-                'headers' => $this->getRawResponse()->getHeaders(),
-                'body' => \GuzzleHttp\json_decode($this->getRawResponse()->getBody()->getContents(),true),
-            ],
+            'raw_response' => $this->getRawResponseForJsonSerialization(),
         ];
     }
 }

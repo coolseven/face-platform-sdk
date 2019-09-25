@@ -4,7 +4,6 @@
 namespace Coolseven\FacePlatformSdk;
 
 
-use Carbon\Carbon;
 use Coolseven\FacePlatformSdk\Auth\AuthConfig;
 use Coolseven\FacePlatformSdk\Contracts\Authorize;
 use Coolseven\FacePlatformSdk\Contracts\ManagesFacePlatformResources;
@@ -14,6 +13,7 @@ use Coolseven\FacePlatformSdk\Events\FaceSetCreated;
 use Coolseven\FacePlatformSdk\Events\FacesImported;
 use Coolseven\FacePlatformSdk\Auth\AccessToken;
 use Coolseven\FacePlatformSdk\Events\SimilarFacesSearched;
+use Coolseven\FacePlatformSdk\Http\calcUrisForRequests;
 use Coolseven\FacePlatformSdk\Http\Responses\CreateFaceSetResponse;
 use Coolseven\FacePlatformSdk\Http\Responses\ImportFacesResponse;
 use Coolseven\FacePlatformSdk\Http\Responses\SearchSimilarFacesResponse;
@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Event;
 
 class FacePlatformClient implements ManagesFacePlatformResources, Authorize
 {
+    use calcUrisForRequests;
+
     /**
      * @var AuthConfig
      */
@@ -74,7 +76,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
      */
     private function getAccessToken(): AccessToken
     {
-        $response = $this->guzzleClient->post($this->authConfig->getOauthServerUriBase() . '/oauth/token', [
+        $response = $this->guzzleClient->post($this->getUriForAccessToken(), [
             'headers'     => [
                 'Accept' => 'application/json',
             ],
@@ -103,7 +105,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
 
         return new AccessToken(
             $body['access_token'],
-            Carbon::now()->addSeconds($body['expires_in'])
+            $body['expires_in']
         );
     }
 
@@ -116,9 +118,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets';
-
-        $rawResponse = $this->guzzleClient->post($uri, [
+        $rawResponse = $this->guzzleClient->post($this->getUriForFaceSets(), [
             'headers'     => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -156,9 +156,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId.'/faces';
-
-        $rawResponse = $this->guzzleClient->post($uri, [
+        $rawResponse = $this->guzzleClient->post($this->getUriForFaces($faceSetId), [
             'headers'     => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -199,9 +197,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId . '/face-searches';
-
-        $rawResponse = $this->guzzleClient->post($uri, [
+        $rawResponse = $this->guzzleClient->post($this->getUriForFaceSearches($faceSetId), [
             'headers'     => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,

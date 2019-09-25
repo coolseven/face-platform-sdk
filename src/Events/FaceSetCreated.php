@@ -36,6 +36,8 @@ class FaceSetCreated implements \JsonSerializable
      */
     public function getRawResponse(): ResponseInterface
     {
+        $this->rawResponse->getBody()->rewind();
+
         return $this->rawResponse;
     }
 

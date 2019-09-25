@@ -44,7 +44,7 @@ trait CreateNewFacePlatformClient
     {
         return new AccessTokenStorage(
            Cache::store('file'),
-            getenv('FACE_PLATFORM_CACHE_KEY')
+            'cache:unit-test:face-platform:access_token'
         );
     }
 }
