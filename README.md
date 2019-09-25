@@ -36,7 +36,7 @@ php artisan vendor:publish --tag=face-platform-sdk
 the config file will be copied to your config dir with filename "face-platform.php"
 
 
-## Basic Usage
+## Manage Resouces
 - create a new face set
 ```php
 $facePlatformClient = app(Coolseven\FacePlatformSdk\FacePlatformClient::class);
@@ -66,18 +66,18 @@ $similarFaces = $response->getSimilarFaces();
 ```
 
 ## Events
-- a `Coolseven\FacePlatformSdk\Events\AccessTokenRefreshed` Event will be fired after face set created.
+- a `Coolseven\FacePlatformSdk\Events\AccessTokenRefreshed` Event will be fired after access token been refreshed.
 ```php
 $accessToken = $accessTokenRefreshedEvent->getRefreshedAccessToken;
 ```
 
-- a `Coolseven\FacePlatformSdk\Events\FaceSetCreated` Event will be fired after face set created.
+- a `Coolseven\FacePlatformSdk\Events\FaceSetCreated` Event will be fired after a new face set been created.
 ```php
 $faceSetId = $faceSetCreatedEvent->getFaceSet()->getId();
 $rawResponse = $faceSetCreatedEvent->getRawResponse();
 ```
 
-- a `Coolseven\FacePlatformSdk\Events\FacesImported` Event will be fired after face set created.
+- a `Coolseven\FacePlatformSdk\Events\FacesImported` Event will be fired after new faces been imported
 ```php
 $importedFaces = $facesImported->getImportedFaces();
 $faceSetId = $facesImported->getFaceSetId();
@@ -85,7 +85,7 @@ $imageBase64 = $facesImported->getImageBase64();
 $rawResponse = $faceSetCreatedEvent->getRawResponse();
 ```
 
-- a `Coolseven\FacePlatformSdk\Events\SimilarFacesSearched` Event will be fired after face set created.
+- a `Coolseven\FacePlatformSdk\Events\SimilarFacesSearched` Event will be fired after similar faces been searched
 ```php
 $similarFaces = $similarFacesSearchedEvent->getSimilarFaces();
 $faceSetId = $similarFacesSearchedEvent->getFaceSetId();
