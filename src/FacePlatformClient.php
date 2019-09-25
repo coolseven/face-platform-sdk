@@ -116,7 +116,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets';
+        $uri = $this->authConfig->getResourceServerUriBase() . '/api/v1/face-sets';
 
         $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
@@ -156,7 +156,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId.'/faces';
+        $uri = $this->authConfig->getResourceServerUriBase() . '/api/v1/face-sets/' . $faceSetId.'/faces';
 
         $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
@@ -199,7 +199,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId . '/face-searches';
+        $uri = $this->authConfig->getResourceServerUriBase() . '/api/v1/face-sets/' . $faceSetId . '/face-searches';
 
         $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
