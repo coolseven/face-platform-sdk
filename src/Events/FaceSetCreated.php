@@ -9,6 +9,21 @@ use Psr\Http\Message\ResponseInterface;
 class FaceSetCreated implements \JsonSerializable
 {
     /**
+     * @var FaceSet
+     */
+    private $faceSet;
+    /**
+     * @var ResponseInterface
+     */
+    private $rawResponse;
+
+    public function __construct(FaceSet $faceSet, ResponseInterface $rawResponse)
+    {
+        $this->faceSet = $faceSet;
+        $this->rawResponse = $rawResponse;
+    }
+
+    /**
      * @return FaceSet
      */
     public function getFaceSet(): FaceSet
@@ -22,20 +37,6 @@ class FaceSetCreated implements \JsonSerializable
     public function getRawResponse(): ResponseInterface
     {
         return $this->rawResponse;
-    }
-    /**
-     * @var FaceSet
-     */
-    private $faceSet;
-    /**
-     * @var ResponseInterface
-     */
-    private $rawResponse;
-
-    public function __construct(FaceSet $faceSet, ResponseInterface $rawResponse)
-    {
-        $this->faceSet = $faceSet;
-        $this->rawResponse = $rawResponse;
     }
 
     /**
@@ -54,7 +55,7 @@ class FaceSetCreated implements \JsonSerializable
                 'status_code' => $this->getRawResponse()->getStatusCode(),
                 'reason_phrase' => $this->getRawResponse()->getReasonPhrase(),
                 'headers' => $this->getRawResponse()->getHeaders(),
-                'body' => $this->getRawResponse()->getBody()->getContents(),
+                'body' => \GuzzleHttp\json_decode($this->getRawResponse()->getBody()->getContents(),true),
             ],
         ];
     }

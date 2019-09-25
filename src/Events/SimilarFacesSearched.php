@@ -81,7 +81,7 @@ class SimilarFacesSearched implements \JsonSerializable
                 'status_code' => $this->getRawResponse()->getStatusCode(),
                 'reason_phrase' => $this->getRawResponse()->getReasonPhrase(),
                 'headers' => $this->getRawResponse()->getHeaders(),
-                'body' => $this->getRawResponse()->getBody()->getContents(),
+                'body' => \GuzzleHttp\json_decode($this->getRawResponse()->getBody()->getContents(),true),
             ],
         ];
     }

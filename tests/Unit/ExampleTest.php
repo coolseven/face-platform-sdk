@@ -5,7 +5,8 @@ namespace Coolseven\FacePlatformSdk\Tests\Unit;
 
 
 
-use Coolseven\FacePlatformSdk\Tests\TestCase;
+
+use Orchestra\Testbench\TestCase;
 
 class ExampleTest extends TestCase
 {

@@ -31,7 +31,11 @@ class AccessTokenStorage implements StoresAccessToken
      */
     public function getAccessToken(): ?AccessToken
     {
-        return unserialize($this->cacheRepo->get($this->cacheKey));
+        $accessTokenCache = $this->cacheRepo->get($this->cacheKey);
+        if (null === $accessTokenCache) {
+            return null;
+        }
+        return unserialize($accessTokenCache);
     }
 
     /**

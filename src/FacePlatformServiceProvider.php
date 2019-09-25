@@ -22,13 +22,14 @@ class FacePlatformServiceProvider extends ServiceProvider
     public function register() : void
     {
         $this->app->singleton(AuthConfig::class,function($app){
-            $uri = $app['config']->get('face-platform.uri');
+            $oauthServer = $app['config']->get('face-platform.oauth_server');
+            $resourceServer = $app['config']->get('face-platform.resource_server');
             $clientId = $app['config']->get('face-platform.client_id');
             $clientSecret = $app['config']->get('face-platform.client_secret');
             $username = $app['config']->get('face-platform.username');
             $password = $app['config']->get('face-platform.password');
 
-            return new AuthConfig($uri,$clientId,$clientSecret,$username,$password);
+            return new AuthConfig($oauthServer,$resourceServer,$clientId,$clientSecret,$username,$password);
         });
 
         $this->app->singleton(StoresAccessToken::class,function($app){

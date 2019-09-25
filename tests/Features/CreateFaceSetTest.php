@@ -4,15 +4,19 @@
 namespace Coolseven\FacePlatformSdk\Tests\Features;
 
 
-use Coolseven\FacePlatformSdk\Tests\TestCase;
+use Coolseven\FacePlatformSdk\Tests\CreateNewFacePlatformClient;
+
 use Illuminate\Support\Str;
+use Orchestra\Testbench\TestCase;
 
 class CreateFaceSetTest extends TestCase
 {
+    use CreateNewFacePlatformClient;
+
     /**
      * @test
      */
-    public function create_face_set()
+    public function create_face_set(): void
     {
         $facePlatformClient = $this->makeFacePlatformClient();
 

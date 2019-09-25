@@ -9,7 +9,7 @@ use Coolseven\FacePlatformSdk\Auth\AuthConfig;
 use Coolseven\FacePlatformSdk\FacePlatformClient;
 use Illuminate\Support\Facades\Cache;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+trait CreateNewFacePlatformClient
 {
     /**
      * @return FacePlatformClient
@@ -28,7 +28,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function getAuthConfig(): AuthConfig
     {
         return new AuthConfig(
-            getenv('FACE_PLATFORM_URI'),
+            getenv('FACE_PLATFORM_OAUTH_SERVER'),
+            getenv('FACE_PLATFORM_RESOURCE_SERVER'),
             getenv('FACE_PLATFORM_CLIENT_ID'),
             getenv('FACE_PLATFORM_CLIENT_SECRET'),
             getenv('FACE_PLATFORM_USERNAME'),
@@ -41,7 +42,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     public function getAccessTokenStorage(): AccessTokenStorage
     {
-
         return new AccessTokenStorage(
            Cache::store('file'),
             getenv('FACE_PLATFORM_CACHE_KEY')

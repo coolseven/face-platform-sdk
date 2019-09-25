@@ -9,6 +9,7 @@ use Coolseven\FacePlatformSdk\Auth\AuthConfig;
 use Coolseven\FacePlatformSdk\Contracts\Authorize;
 use Coolseven\FacePlatformSdk\Contracts\ManagesFacePlatformResources;
 use Coolseven\FacePlatformSdk\Contracts\StoresAccessToken;
+use Coolseven\FacePlatformSdk\Events\AccessTokenRefreshed;
 use Coolseven\FacePlatformSdk\Events\FaceSetCreated;
 use Coolseven\FacePlatformSdk\Events\FacesImported;
 use Coolseven\FacePlatformSdk\Auth\AccessToken;
@@ -61,9 +62,11 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
 
     public function refreshAccessToken(): AccessToken
     {
-        return $this->accessTokenStorage->saveAccessToken(
+        return tap($this->accessTokenStorage->saveAccessToken(
             $this->getAccessToken()
-        );
+        ),function(string $refreshedToken){
+            Event::dispatch(new AccessTokenRefreshed($refreshedToken));
+        });
     }
 
     /**
@@ -71,7 +74,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
      */
     private function getAccessToken(): AccessToken
     {
-        $response = $this->guzzleClient->post($this->authConfig->getUri() . 'oauth/token', [
+        $response = $this->guzzleClient->post($this->authConfig->getOauthServerUriBase() . '/oauth/token', [
             'headers'     => [
                 'Accept' => 'application/json',
             ],
@@ -113,9 +116,9 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getUri() . 'face-sets';
+        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets';
 
-        $response = $this->guzzleClient->post($uri, [
+        $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -136,14 +139,16 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
          * }
          * </pre>
          */
-        $body = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+        $body = tap(\GuzzleHttp\json_decode($rawResponse->getBody()->getContents(), true),function()use($rawResponse){
+            $rawResponse->getBody()->rewind();
+        });
 
         $faceSet = new FaceSet($body['data']['id'], $body['data']['name']);
 
-        $createFaceSetResponse = new CreateFaceSetResponse($faceSet, $response);
+        $createFaceSetResponse = new CreateFaceSetResponse($faceSet, $rawResponse);
 
-        return tap($createFaceSetResponse, function ($createFaceSetResponse) use ($faceSet) {
-            Event::dispatch(new FaceSetCreated($faceSet, $createFaceSetResponse));
+        return tap($createFaceSetResponse, function () use ($faceSet,$rawResponse) {
+            Event::dispatch(new FaceSetCreated($faceSet, $rawResponse));
         });
     }
 
@@ -151,9 +156,9 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getUri() . 'face-sets/'.$faceSetId;
+        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId.'/faces';
 
-        $response = $this->guzzleClient->post($uri, [
+        $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -174,17 +179,19 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
          * }
          * </pre>
          */
-        $body = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+        $body = tap(\GuzzleHttp\json_decode($rawResponse->getBody()->getContents(), true),function()use($rawResponse){
+            $rawResponse->getBody()->rewind();
+        });
 
         $importedFaces = [];
         foreach ($body['data'] as $face) {
             $importedFaces[] = new Face($face['id']);
         }
 
-        $importFacesResponse = new ImportFacesResponse($importedFaces, $response);
+        $importFacesResponse = new ImportFacesResponse($importedFaces, $rawResponse);
 
-        return tap($importFacesResponse, function ($importFacesResponse) use ($importedFaces,$faceSetId,$imageBase64) {
-            Event::dispatch(new FacesImported($importedFaces,$faceSetId,$imageBase64,$importFacesResponse));
+        return tap($importFacesResponse, function () use ($importedFaces,$faceSetId,$imageBase64,$rawResponse) {
+            Event::dispatch(new FacesImported($importedFaces,$faceSetId,$imageBase64,$rawResponse));
         });
     }
 
@@ -192,7 +199,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
     {
         $accessToken = $this->getValidAccessToken();
 
-        $uri = $this->authConfig->getUri() . 'face-sets/'.$faceSetId.'/face-searches';
+        $uri = $this->authConfig->getOauthServerUriBase() . '/api/v1/face-sets/' . $faceSetId . '/face-searches';
 
         $rawResponse = $this->guzzleClient->post($uri, [
             'headers'     => [
@@ -216,17 +223,19 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
          * }
          * </pre>
          */
-        $body = \GuzzleHttp\json_decode($rawResponse->getBody()->getContents(), true);
+        $body = tap(\GuzzleHttp\json_decode($rawResponse->getBody()->getContents(), true),function()use($rawResponse){
+            $rawResponse->getBody()->rewind();
+        });
 
         $similarFaces = [];
         foreach ($body['data'] as $face) {
-            $similarFaces[] = new SimilarFace($face['id'],$faceSetId);
+            $similarFaces[] = new SimilarFace($face['id'],$face['similarity']);
         }
 
         $searchSimilarFacesResponse = new SearchSimilarFacesResponse($similarFaces, $rawResponse);
 
-        return tap($searchSimilarFacesResponse, function ($searchSimilarFacesResponse) use ($similarFaces,$faceSetId,$imageBase64) {
-            Event::dispatch(new SimilarFacesSearched($similarFaces,$faceSetId,$imageBase64,$searchSimilarFacesResponse));
+        return tap($searchSimilarFacesResponse, function () use ($similarFaces,$faceSetId,$imageBase64,$rawResponse) {
+            Event::dispatch(new SimilarFacesSearched($similarFaces,$faceSetId,$imageBase64,$rawResponse));
         });
     }
 }

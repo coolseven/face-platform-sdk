@@ -9,7 +9,11 @@ class AuthConfig implements \JsonSerializable
     /**
      * @var string
      */
-    private $uri;
+    private $oauthServerUriBase;
+    /**
+     * @var string
+     */
+    private $resourceServerUriBase;
     /**
      * @var string
      */
@@ -28,26 +32,36 @@ class AuthConfig implements \JsonSerializable
     private $password;
 
     public function __construct(
-        string $uri,
+        string $oauthServerUriBase,
+        string $resourceServerUriBase,
         string $clientId,
         string $clientSecret,
         string $username,
         string $password
     )
     {
-        $this->uri = $uri;
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->username = $username;
-        $this->password = $password;
+        $this->oauthServerUriBase = $oauthServerUriBase;
+        $this->resourceServerUriBase = $resourceServerUriBase;
+        $this->clientId           = $clientId;
+        $this->clientSecret       = $clientSecret;
+        $this->username           = $username;
+        $this->password           = $password;
     }
 
     /**
      * @return string
      */
-    public function getUri(): string
+    public function getOauthServerUriBase(): string
     {
-        return $this->uri;
+        return $this->oauthServerUriBase;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceServerUriBase(): string
+    {
+        return $this->resourceServerUriBase;
     }
 
     /**
@@ -92,7 +106,8 @@ class AuthConfig implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'uri' => $this->getUri(),
+            'oauth_server_uri_base' => $this->getOauthServerUriBase(),
+            'resource_server_uri_base' => $this->getResourceServerUriBase(),
             'client_id' => $this->getClientId(),
             'client_secret' => $this->getClientSecret(),
             'username' => $this->getUsername(),
