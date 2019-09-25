@@ -13,14 +13,19 @@ class AccessToken implements \JsonSerializable
      */
     private $accessToken;
     /**
+     * @var int
+     */
+    private $expiresIn;
+    /**
      * @var Carbon
      */
     private $expiresAt;
 
-    public function __construct(string $accessToken, Carbon $expiresAt)
+    public function __construct(string $accessToken, int $expiresInSeconds)
     {
-        $this->accessToken  = $accessToken;
-        $this->expiresAt    = $expiresAt;
+        $this->accessToken = $accessToken;
+        $this->expiresIn   = $expiresInSeconds;
+        $this->expiresAt   = Carbon::now()->addSeconds($expiresInSeconds);
     }
 
     /**
@@ -32,16 +37,26 @@ class AccessToken implements \JsonSerializable
     }
 
     /**
+     * @return int
+     */
+    public function getExpiresIn(): int
+    {
+        return $this->expiresIn;
+    }
+
+    /**
      * @return Carbon
      */
     public function getExpiresAt(): Carbon
     {
-        return $this->expiresAt;
+        return $this->expiresAt->clone();
     }
 
-    public function needsRefresh() : bool
+    public function needsRefresh(): bool
     {
-        return $this->getExpiresAt()->subMinutes(10)->lessThan(Carbon::now());
+        $safeSeconds = ceil($this->expiresIn * 0.2);
+
+        return Carbon::now()->greaterThanOrEqualTo($this->getExpiresAt()->subSeconds($safeSeconds)) ;
     }
 
     public function __toString()
@@ -51,6 +66,7 @@ class AccessToken implements \JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
+     *
      * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
@@ -60,6 +76,7 @@ class AccessToken implements \JsonSerializable
     {
         return [
             'access_token' => $this->getAccessToken(),
+            'expires_in'   => $this->getExpiresIn(),
             'expires_at'   => $this->getExpiresAt()->toDateTimeString(),
         ];
     }

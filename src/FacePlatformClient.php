@@ -4,7 +4,6 @@
 namespace Coolseven\FacePlatformSdk;
 
 
-use Carbon\Carbon;
 use Coolseven\FacePlatformSdk\Auth\AuthConfig;
 use Coolseven\FacePlatformSdk\Contracts\Authorize;
 use Coolseven\FacePlatformSdk\Contracts\ManagesFacePlatformResources;
@@ -106,7 +105,7 @@ class FacePlatformClient implements ManagesFacePlatformResources, Authorize
 
         return new AccessToken(
             $body['access_token'],
-            Carbon::now()->addSeconds($body['expires_in'])
+            $body['expires_in']
         );
     }
 
