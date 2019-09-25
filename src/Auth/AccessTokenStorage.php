@@ -35,7 +35,7 @@ class AccessTokenStorage implements StoresAccessToken
         if (null === $accessTokenCache) {
             return null;
         }
-        return unserialize($accessTokenCache);
+        return unserialize($accessTokenCache,[AccessToken::class]);
     }
 
     /**
