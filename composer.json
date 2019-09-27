@@ -1,7 +1,7 @@
 {
   "name": "coolseven/face-platform-sdk",
   "description": "Face Platform Api Client For Laravel",
-  "license": "GPL",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "coolseven",
