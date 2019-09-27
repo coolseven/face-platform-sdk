@@ -23,10 +23,10 @@ FACE_PLATFORM_PASSWORD=
 
 # the cache store should be one of the stores you defined in config/cache.php
 # will use 'file' as cache store if not set
-FACE_PLATFORM_CACHE_STORE=
+FACE_PLATFORM_CACHE_STORE=file
 # the cache key to store your face platform access token, 
 # will use 'cache:face-platform:access_token' as cache key if not set 
-FACE_PLATFORM_CACHE_KEY=
+FACE_PLATFORM_CACHE_KEY=cache:face-platform:access_token
 ```
 
 - publish config file
