@@ -52,7 +52,7 @@ $facePlatformClient = app(Coolseven\FacePlatformSdk\FacePlatformClient::class);
 $faceSetId = 'your-demo-face-set-id';
 $imagePath = 'your_imgae_file_path';
 $response = $facePlatformClient->importFaces($faceSetId, base64_encode(file_get_contents($imagePath)));
-$importedFaces = $response->getFaces();
+$importedFaces = $response->getImportedFaces();
 ```
 
 - search similar faces in a face set
@@ -68,7 +68,7 @@ $similarFaces = $response->getSimilarFaces();
 ## Events
 - a `Coolseven\FacePlatformSdk\Events\AccessTokenRefreshed` Event will be fired after access token been refreshed.
 ```php
-$accessToken = $accessTokenRefreshedEvent->getRefreshedAccessToken;
+$accessToken = $accessTokenRefreshedEvent->getRefreshedAccessToken();
 ```
 
 - a `Coolseven\FacePlatformSdk\Events\FaceSetCreated` Event will be fired after a new face set been created.
