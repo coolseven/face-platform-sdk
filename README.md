@@ -79,10 +79,10 @@ $rawResponse = $faceSetCreatedEvent->getRawResponse();
 
 - a `Coolseven\FacePlatformSdk\Events\FacesImported` Event will be fired after new faces been imported
 ```php
-$importedFaces = $facesImported->getImportedFaces();
-$faceSetId = $facesImported->getFaceSetId();
-$imageBase64 = $facesImported->getImageBase64();
-$rawResponse = $faceSetCreatedEvent->getRawResponse();
+$importedFaces = $facesImportedEvent->getImportedFaces();
+$faceSetId = $facesImportedEvent->getFaceSetId();
+$imageBase64 = $facesImportedEvent->getImageBase64();
+$rawResponse = $facesImportedEvent->getRawResponse();
 ```
 
 - a `Coolseven\FacePlatformSdk\Events\SimilarFacesSearched` Event will be fired after similar faces been searched
