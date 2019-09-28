@@ -46,5 +46,8 @@ class FacePlatformServiceProvider extends ServiceProvider
             $accessTokenStorage = $app[StoresAccessToken::class];
 
             return new FacePlatformClient($authConfig,$accessTokenStorage);
-        });}
+        });
+
+        $this->app->alias(FacePlatformClient::class,'face-platform-client');
+    }
 }

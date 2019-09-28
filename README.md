@@ -40,6 +40,8 @@ the config file will be copied to your config dir with filename "face-platform-s
 - create a new face set
 ```php
 $facePlatformClient = app(Coolseven\FacePlatformSdk\FacePlatformClient::class);
+// or $facePlatformClient = app('face-platform-client')
+
 $faceSetName = 'your-demo-face-set';
 $response = $facePlatformClient->createFaceSet($faceSetName);
 $faceSetId = $response->getFaceSet()->getId();
