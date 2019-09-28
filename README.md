@@ -29,7 +29,7 @@ FACE_PLATFORM_CACHE_STORE=file
 FACE_PLATFORM_CACHE_KEY=cache:face-platform:access_token
 ```
 
-- publish config file
+- publish config file ( optional )
 ```bash
 php artisan vendor:publish --tag=face-platform-sdk.config
 ```

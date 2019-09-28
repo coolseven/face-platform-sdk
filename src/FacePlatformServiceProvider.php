@@ -17,6 +17,8 @@ class FacePlatformServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/face-platform-sdk.php' => $this->app->configPath('face-platform-sdk.php'),
         ],'face-platform-sdk.config');
+
+        $this->mergeConfigFrom( __DIR__.'/../config/face-platform-sdk.php','face-platform-sdk');
     }
 
     public function register() : void
@@ -44,6 +46,5 @@ class FacePlatformServiceProvider extends ServiceProvider
             $accessTokenStorage = $app[StoresAccessToken::class];
 
             return new FacePlatformClient($authConfig,$accessTokenStorage);
-        });
-    }
+        });}
 }
